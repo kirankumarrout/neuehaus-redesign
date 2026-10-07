@@ -1,0 +1,13 @@
+{
+  "name": "neuehaus-redesign",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neuehaus architecture portfolio redesign — dependency-free static website",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "node build.mjs",
+    "check": "node --check app.js && node --check data.js && node --check server.mjs && node --check build.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
