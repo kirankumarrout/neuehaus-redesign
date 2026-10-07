@@ -36,7 +36,7 @@ function createHero(hero){
   ctx.strokeStyle='rgba(100,113,88,.09)';ctx.lineWidth=.6;
   for(let n=-6;n<=6;n++){for(const line of [[[n*.65,-.25,-4],[n*.65,-.25,4]],[[-4,-.25,n*.65],[4,-.25,n*.65]]]){const a=project(line[0]),b=project(line[1]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke()}}
   const shadow=project([.3,-.23,.3]);ctx.save();ctx.translate(...shadow);ctx.scale(1,.35);const radius=Math.min(width*.38,260);const g=ctx.createRadialGradient(0,0,5,0,0,radius);g.addColorStop(0,'rgba(49,61,39,.23)');g.addColorStop(1,'rgba(49,61,39,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.fill();ctx.restore();
-  const sorted=faces.map(f=>({...f,depth:f.p.reduce((s,p)=>s+rotate(p)[2]-p[1]*.43,0)/4})).sort((a,b)=>a.depth-b.depth);
+  const sorted=faces.map(f=>({...f,depth:f.p.reduce((s,p)=>s+rotate(p)[2]+p[1]*.43,0)/4})).sort((a,b)=>a.depth-b.depth);
   for(const f of sorted){const points=f.p.map(project);ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=`rgba(${f.c.map(c=>Math.min(255,Math.round(c*f.k))).join(',')},${f.glass?.25:1})`;ctx.fill();ctx.strokeStyle=f.glass?'rgba(100,131,114,.25)':'rgba(82,89,70,.15)';ctx.lineWidth=.6;ctx.stroke()}
  }
  function resize(){const r=stage.getBoundingClientRect();width=r.width;height=r.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx?.setTransform(dpr,0,0,dpr,0,0);draw()}
