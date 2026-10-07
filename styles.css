@@ -14,3 +14,6 @@
 @media(max-width:1000px){.scene-tools{right:5%;bottom:20%}.scene-caption{bottom:14%;font-size:7px}}
 @media(max-width:640px){.hero-v2{min-height:900px}.hero-v2 .hero-scene{top:42%;height:40%}.scene-tools{bottom:17%;right:auto;left:50%;transform:translateX(-50%);white-space:nowrap;animation:none}.scene-tools button{font-size:9px;padding:8px 12px}.scene-tools button span{font-size:14px}.scene-caption{bottom:6%;font-size:6px}.hero-v2 .hero-bottom{bottom:28px;gap:13px}.hero-v2 .hero-description{max-width:240px}.hero-v2 .hero-content{top:135px}}
 @media(prefers-reduced-motion:reduce){.hero-atmosphere:after,.hero-primary{transition:none!important}}
+/* Keep the scene caption separate from the exploration toolbar. */
+.hero-v2 .scene-caption{bottom:3%}
+@media(max-width:640px){.hero-v2 .scene-caption{top:0;bottom:auto}}
