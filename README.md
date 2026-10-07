@@ -35,7 +35,7 @@ The application uses hash navigation, so every view works on simple static hosti
 
 ## Motion and interaction
 
-The landing page opens with an original, shaded architectural pavilion rendered through 3D projection on Canvas. It orbits slowly, responds to desktop pointer movement and adapts to phone layouts. The visitor can switch between the 3D study and the project film. A pause control applies to both views. Animation and video pause when the hero is off-screen or the browser tab is hidden; resources are cleaned up on navigation. The pavilion is an abstract concept, not a project digital twin.
+The landing page opens with an original, shaded architectural pavilion rendered through 3D projection on Canvas. It orbits slowly, supports drag rotation with inertia and keyboard arrow rotation, and adapts to phone layouts. Lift the roof to explore the pavilion, switch to golden-hour lighting, or reset the view. The primary project link subtly follows the pointer. The visitor can switch between the 3D study and the project film. A pause control applies to both views. Animation and video pause when the hero is off-screen or the browser tab is hidden; resources are cleaned up on navigation. The pavilion is an abstract concept, not a project digital twin.
 
 The optional 12-second looping MP4 project film is derived from existing Neuehaus still images using slow pans. This is an image film, not filmed project footage. Play/pause controls and a poster fallback are included. Reduced-motion preferences disable autoplay and animated reveals.
 

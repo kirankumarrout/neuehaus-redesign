@@ -7,6 +7,7 @@ function createHero(hero){
  const mediaQuery=matchMedia('(prefers-reduced-motion: reduce)');
  let stopped=mediaQuery.matches,visible=true,disposed=false,mode='model',raf=0;
  let width=1,height=1,angle=-.65,targetX=0,pointerX=0,lastTime=0,time=0;
+ let yaw=0,velocity=0,drag=null,roof=0,roofTarget=0,warm=0,warmTarget=0;
  const faces=[];
  function box(x,y,z,w,h,d,color,glass=false){
   const a=[x,y,z],b=[x+w,y,z],c=[x+w,y+h,z],d0=[x,y+h,z],e=[x,y,z+d],f=[x+w,y,z+d],g=[x+w,y+h,z+d],h0=[x,y+h,z+d];
@@ -28,27 +29,39 @@ function createHero(hero){
  for(let i=0;i<11;i++)box(-2.15+i*.41,2.36,-1.42,.12,.065,2.84,[207,203,184]);
  for(let i=0;i<3;i++)box(-.75,-.02-i*.045,1.4+i*.23,1.5,.10,.26,[220,215,198]);
  box(1.35,.17,1.32,.7,.25,.32,[102,117,88]);
- const rotate=p=>{const a=angle+pointerX*.20,c=Math.cos(a),s=Math.sin(a);return[p[0]*c-p[2]*s,p[1],p[0]*s+p[2]*c]};
- function project(p){const r=rotate(p),scale=Math.min(width/7.4,height/5.3),depth=1+r[2]*.035;return[width/2+r[0]*scale/depth,height*.61+(-r[1]*.94+r[2]*.39)*scale/depth]}
+ const rotate=p=>{const a=angle+pointerX*.20,c=Math.cos(a),s=Math.sin(a);return[p[0]*c-p[2]*s,p[1]+(p[1]>=2.07?roof*.72:0),p[0]*s+p[2]*c]};
+ function project(p){const r=rotate(p),scale=Math.min(width/7.4,height/5.9),depth=1+r[2]*.035;return[width/2+r[0]*scale/depth,height*.65+(-r[1]*.94+r[2]*.39)*scale/depth]}
  function draw(){
   if(!ctx)return;ctx.clearRect(0,0,width,height);
   // A fine ground grid anchors the object without obscuring it.
   ctx.strokeStyle='rgba(100,113,88,.09)';ctx.lineWidth=.6;
   for(let n=-6;n<=6;n++){for(const line of [[[n*.65,-.25,-4],[n*.65,-.25,4]],[[-4,-.25,n*.65],[4,-.25,n*.65]]]){const a=project(line[0]),b=project(line[1]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke()}}
   const shadow=project([.3,-.23,.3]);ctx.save();ctx.translate(...shadow);ctx.scale(1,.35);const radius=Math.min(width*.38,260);const g=ctx.createRadialGradient(0,0,5,0,0,radius);g.addColorStop(0,'rgba(49,61,39,.23)');g.addColorStop(1,'rgba(49,61,39,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.fill();ctx.restore();
-  const sorted=faces.map(f=>({...f,depth:f.p.reduce((s,p)=>s+rotate(p)[2]+p[1]*.43,0)/4})).sort((a,b)=>a.depth-b.depth);
-  for(const f of sorted){const points=f.p.map(project);ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=`rgba(${f.c.map(c=>Math.min(255,Math.round(c*f.k))).join(',')},${f.glass?.25:1})`;ctx.fill();ctx.strokeStyle=f.glass?'rgba(100,131,114,.25)':'rgba(82,89,70,.15)';ctx.lineWidth=.6;ctx.stroke()}
+  const sorted=faces.map(f=>({...f,depth:f.p.reduce((s,p)=>s+rotate(p)[2]+rotate(p)[1]*.43,0)/4})).sort((a,b)=>a.depth-b.depth);
+  for(const f of sorted){const points=f.p.map(project);ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=`rgba(${f.c.map((c,i)=>Math.min(255,Math.max(0,Math.round(c*f.k+warm*[20,5,-25][i])))).join(',')},${f.glass?(.25+warm*.12):1})`;ctx.fill();ctx.strokeStyle=f.glass?'rgba(100,131,114,.25)':'rgba(82,89,70,.15)';ctx.lineWidth=.6;ctx.stroke()}
  }
  function resize(){const r=stage.getBoundingClientRect();width=r.width;height=r.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx?.setTransform(dpr,0,0,dpr,0,0);draw()}
- function tick(t){if(disposed)return;raf=0;if(stopped||!visible||document.hidden||mode!=='model')return;const dt=Math.min((t-lastTime)/1000||0,.05);lastTime=t;time+=dt;angle=-.65+Math.sin(time*.15)*.28;pointerX+=(targetX-pointerX)*.055;draw();raf=requestAnimationFrame(tick)}
+ function tick(t){if(disposed)return;raf=0;if(stopped||!visible||document.hidden||mode!=='model')return;const dt=Math.min((t-lastTime)/1000||0,.05);lastTime=t;time+=dt;if(!drag){yaw+=velocity;velocity*=Math.pow(.94,dt*60)}angle=-.65+Math.sin(time*.13)*.35+yaw;const ease=1-Math.exp(-5*dt);pointerX+=(targetX-pointerX)*ease;roof+=(roofTarget-roof)*ease;warm+=(warmTarget-warm)*ease;draw();raf=requestAnimationFrame(tick)}
  function schedule(){if(!raf&&!disposed&&!stopped&&visible&&!document.hidden&&mode==='model'){lastTime=performance.now();raf=requestAnimationFrame(tick)}}
  function sync(){pause.textContent=stopped?'▷':'Ⅱ';pause.setAttribute('aria-label',stopped?'Play animation':'Pause animation');hero.classList.toggle('hero-paused',stopped);if(stopped||!visible||document.hidden){cancelAnimationFrame(raf);raf=0;video.pause()}else if(mode==='model')schedule();else video.play().catch(()=>{status.textContent='Select Project film again to start playback.'})}
  async function selectView(next){mode=next;hero.dataset.view=next;hero.querySelectorAll('[data-hero-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.heroView===next)));status.textContent='';if(next==='film'){cancelAnimationFrame(raf);raf=0;video.preload='auto';if(video.readyState===0)video.load();if(!stopped&&visible&&!document.hidden){try{await video.play()}catch{if(!disposed&&mode==='film')status.textContent='Tap play to start the project film.'}}}else{video.pause();draw();schedule()}}
  const abort=new AbortController(),events={signal:abort.signal};
  hero.querySelectorAll('[data-hero-view]').forEach(b=>b.addEventListener('click',()=>selectView(b.dataset.heroView),events));
  pause.addEventListener('click',()=>{stopped=!stopped;sync()},events);
- stage.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'&&!stopped){const r=stage.getBoundingClientRect();targetX=(e.clientX-r.left)/r.width*2-1}},events);
+ function interaction(){if(stopped){roof=roofTarget;warm=warmTarget;angle=-.65+yaw;draw()}else schedule()}
+ stage.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={x:e.clientX};velocity=0;stage.setPointerCapture(e.pointerId);stage.classList.add('dragging')},events);
+ stage.addEventListener('pointermove',e=>{if(drag){const delta=(e.clientX-drag.x)*.006;velocity=delta;yaw+=delta;drag.x=e.clientX;interaction()}else if(e.pointerType==='mouse'&&!stopped){const r=stage.getBoundingClientRect();targetX=(e.clientX-r.left)/r.width*2-1}},events);
+ const release=()=>{drag=null;stage.classList.remove('dragging')};
+ stage.addEventListener('pointerup',release,events);stage.addEventListener('pointercancel',release,events);stage.addEventListener('lostpointercapture',release,events);
  stage.addEventListener('pointerleave',()=>targetX=0,events);
+ stage.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();yaw+=e.key==='ArrowLeft'?-.22:.22;velocity=0;interaction()}},events);
+ const roofButton=hero.querySelector('[data-scene="roof"]'),lightButton=hero.querySelector('[data-scene="light"]');
+ roofButton.addEventListener('click',()=>{roofTarget=roofTarget?0:1;roofButton.setAttribute('aria-pressed',String(Boolean(roofTarget)));roofButton.innerHTML=roofTarget?'<span>↡</span> Close roof':'<span>↟</span> Lift roof';interaction()},events);
+ lightButton.addEventListener('click',()=>{warmTarget=warmTarget?0:1;lightButton.setAttribute('aria-pressed',String(Boolean(warmTarget)));hero.classList.toggle('golden-hour',Boolean(warmTarget));interaction()},events);
+ hero.querySelector('[data-scene="reset"]').addEventListener('click',()=>{yaw=0;velocity=0;targetX=0;time=0;roofTarget=0;warmTarget=0;roofButton.setAttribute('aria-pressed','false');roofButton.innerHTML='<span>↟</span> Lift roof';lightButton.setAttribute('aria-pressed','false');hero.classList.remove('golden-hour');interaction()},events);
+ const cta=hero.querySelector('.hero-primary');
+ cta.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||mediaQuery.matches)return;const r=cta.getBoundingClientRect();cta.style.translate=`${(e.clientX-r.left-r.width/2)*.12}px ${(e.clientY-r.top-r.height/2)*.18}px`},events);
+ cta.addEventListener('pointerleave',()=>cta.style.translate='',events);
  video.addEventListener('error',()=>{status.textContent='The film could not load. The 3D study is still available.'},events);
  document.addEventListener('visibilitychange',sync,events);
  mediaQuery.addEventListener('change',e=>{stopped=e.matches;sync()},events);
