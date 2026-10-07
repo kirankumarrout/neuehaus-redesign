@@ -25,7 +25,7 @@ The application uses hash navigation, so every view works on simple static hosti
 
 ## Included views
 
-- Home: cinematic hero, introduction, selected project, studio perspective, expertise panels, 3D concept study.
+- Home: animated 3D pavilion hero with a project-film switch, introduction, selected project, studio perspective, expertise panels, 3D concept study.
 - Work: ten original portfolio images, Architecture/Interiors filters, accessible full-screen image viewer.
 - The Affluence: project overview, verified facts and nine project images.
 - Studio: practice introduction and editorial design perspective.
@@ -35,7 +35,9 @@ The application uses hash navigation, so every view works on simple static hosti
 
 ## Motion and interaction
 
-12-second looping MP4 hero film, derived from existing Neuehaus still images using slow pans. This is an image film, not filmed project footage. Play/pause controls and a poster fallback are included. Reduced-motion preferences disable autoplay and animated reveals.
+The landing page opens with an original, shaded architectural pavilion rendered through 3D projection on Canvas. It orbits slowly, responds to desktop pointer movement and adapts to phone layouts. The visitor can switch between the 3D study and the project film. A pause control applies to both views. Animation and video pause when the hero is off-screen or the browser tab is hidden; resources are cleaned up on navigation. The pavilion is an abstract concept, not a project digital twin.
+
+The optional 12-second looping MP4 project film is derived from existing Neuehaus still images using slow pans. This is an image film, not filmed project footage. Play/pause controls and a poster fallback are included. Reduced-motion preferences disable autoplay and animated reveals.
 
 Scroll reveal transitions, fine-pointer contextual cursor, image zooms, gallery navigation with keyboard arrows, modal Escape handling, navigation focus wrapping and a page progress indicator. Native scrolling is retained.
 
@@ -49,6 +51,7 @@ The form validates required fields and prepares a `mailto:` draft to `info.neueh
 
 - `data.js`: portfolio images, captions and services.
 - `app.js`: view templates, copy and interactions.
+- `hero.js`: procedural 3D hero rendering, playback and animation lifecycle.
 - `styles.css`: typography, colours, layouts and responsive breakpoints.
 - `index.html`: navigation, footer, metadata and dialogs.
 - `assets/`: local WebP images, favicon and hero image film.
