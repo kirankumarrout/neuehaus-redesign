@@ -35,13 +35,13 @@ The application uses hash navigation, so every view works on simple static hosti
 
 ## Motion and interaction
 
-The landing page opens with an original, shaded architectural pavilion rendered through 3D projection on Canvas. It orbits slowly, supports drag rotation with inertia and keyboard arrow rotation, and adapts to phone layouts. Lift the roof to explore the pavilion, switch to golden-hour lighting, or reset the view. The primary project link subtly follows the pointer. The visitor can switch between the 3D study and the project film. A pause control applies to both views. Animation and video pause when the hero is off-screen or the browser tab is hidden; resources are cleaned up on navigation. The pavilion is an abstract concept, not a project digital twin.
+The hero opens with the supplied `37096_gwr_video_mvp.mp4`, optimized to a muted 10-second H.264 loop. A still frame from the supplied footage provides its poster and fallback. The source upload remains unchanged. Autoplay is disabled for reduced-motion visitors, with a play control available. Video pauses off-screen and in hidden browser tabs.
 
-The optional 12-second looping MP4 project film is derived from existing Neuehaus still images using slow pans. This is an image film, not filmed project footage. Play/pause controls and a poster fallback are included. Reduced-motion preferences disable autoplay and animated reveals.
+Switch to 3D villa for an original interactive architectural concept with stone texture, cornices, window mullions, metal frames, wooden entry doors, courtyard paving, planting, palms, directional lighting and cast shadows. Drag or use arrow keys to rotate, lift the roof, change to golden-hour lighting, or reset. The same detailed renderer powers the Spatial Lab's solid, wireframe and exploded modes.
 
-Scroll reveal transitions, fine-pointer contextual cursor, image zooms, gallery navigation with keyboard arrows, modal Escape handling, navigation focus wrapping and a page progress indicator. Native scrolling is retained.
+The villa is an interpretive concept inspired by the portfolio, not a surveyed digital twin or photoreal rendering of The Affluence. The cinematic film supplies the actual visual reference. A poster fallback remains visible if WebGL is unavailable.
 
-The CSS 3D model supports drag rotation, accessible rotation buttons, solid/wireframe/exploded views and reset. It is an original abstract interactive concept, **not a digital twin of The Affluence**. Soft raised controls provide neumorphism; restrained translucent surfaces provide glassmorphism.
+Three.js 0.180.0 is included locally; its MIT notice is in `assets/THREE-LICENSE.txt`. There are no runtime CDN requests for the renderer. Frame rate work stops when a scene is hidden, paused or off-screen. Geometry, materials, textures and event handlers are disposed on navigation.
 
 ## Inquiry behavior
 
@@ -51,7 +51,8 @@ The form validates required fields and prepares a `mailto:` draft to `info.neueh
 
 - `data.js`: portfolio images, captions and services.
 - `app.js`: view templates, copy and interactions.
-- `hero.js`: procedural 3D hero rendering, playback and animation lifecycle.
+- `hero.js`: hero film playback, view switching and controls.
+- `building.js`: shared detailed WebGL villa renderer and resource lifecycle.
 - `styles.css`: typography, colours, layouts and responsive breakpoints.
 - `index.html`: navigation, footer, metadata and dialogs.
 - `assets/`: local WebP images, favicon and hero image film.
@@ -91,4 +92,4 @@ JavaScript syntax, static build, local image/video availability, view markup, in
 
 Browser rendering and end-to-end interaction testing were unavailable in this session. Before production, review in Chrome/Safari on desktop and phones, test the mailto draft on the intended devices, confirm studio details and image attribution, and replace the hero image film with commissioned footage if desired.
 
-This is a static frontend deliverable. It does not include a CMS, lead database, real project BIM model or production video footage. There are no analytics or tracking scripts in the package.
+This is a static frontend deliverable. It does not include a CMS, lead database or surveyed BIM model. There are no analytics or tracking scripts in the package.
