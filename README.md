@@ -93,3 +93,8 @@ JavaScript syntax, static build, local image/video availability, view markup, in
 Browser rendering and end-to-end interaction testing were unavailable in this session. Before production, review in Chrome/Safari on desktop and phones, test the mailto draft on the intended devices, confirm studio details and image attribution, and replace the hero image film with commissioned footage if desired.
 
 This is a static frontend deliverable. It does not include a CMS, lead database or surveyed BIM model. There are no analytics or tracking scripts in the package.
+
+
+## Post-hero reference sequence
+
+The client-supplied screen recording is used as a cropped, silent, scroll-scrubbed video (14–46 seconds of the recording), rather than claiming to recreate its underlying 3D assets. `journey.js` maps native scroll progress to video time, with short keyframe spacing for seeking. The source navigation and lower controls are cropped away. This replaces the former home introduction and selected-work layout; the existing hero and later sections remain. Neuehaus portfolio images populate the new masonry-style work grid. On mobile, the film is contained to preserve the full visual composition. Reduced-motion users receive a static poster, and every visitor can skip directly to the work grid. Route disposal removes listeners and releases the media source.
