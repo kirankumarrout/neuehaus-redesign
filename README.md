@@ -98,3 +98,7 @@ This is a static frontend deliverable. It does not include a CMS, lead database 
 ## Post-hero reference sequence
 
 The client-supplied screen recording is used as a cropped, silent, scroll-scrubbed video (14–46 seconds of the recording), rather than claiming to recreate its underlying 3D assets. `journey.js` maps native scroll progress to video time, with short keyframe spacing for seeking. The source navigation and lower controls are cropped away. This replaces the former home introduction and selected-work layout; the existing hero and later sections remain. Neuehaus portfolio images populate the new masonry-style work grid. On mobile, the film is contained to preserve the full visual composition. Reduced-motion users receive a static poster, and every visitor can skip directly to the work grid. Route disposal removes listeners and releases the media source.
+
+
+### Clarity refinement
+The scroll sequence uses a 2560 × 1166, 30 fps export from the original 60 fps recording, with Lanczos resizing, gentle edge sharpening, a high-quality WebP poster and two-pass bitrate allocation. Keyframes every 0.5 seconds support seeking. Time-based scroll easing (85 ms response) softens abrupt wheel and trackpad updates while preserving reversible scrolling. Versioned media names avoid stale cached video.
